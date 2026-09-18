@@ -1,0 +1,34 @@
+name: Bug report
+description: Something doesn't work as it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Release version (or template/construct version) you have deployed
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area (best guess is fine)
+      options:
+        - Don't know
+        - Sending / receiving mail
+        - Webmail
+        - Admin UI
+        - JMAP API / SDK
+        - Install / upgrade
+        - DNS / domain setup
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or error messages
+      description: CloudWatch log lines or error output. Remove email addresses and anything private.
+      render: text

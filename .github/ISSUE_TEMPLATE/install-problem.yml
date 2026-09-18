@@ -1,0 +1,30 @@
+name: Install problem
+description: The deploy failed or the install didn't work
+labels: [install]
+body:
+  - type: dropdown
+    id: method
+    attributes:
+      label: Install method
+      options:
+        - CloudFormation template
+        - CDK constructs
+    validations:
+      required: true
+  - type: input
+    id: region
+    attributes:
+      label: AWS region
+  - type: textarea
+    id: step
+    attributes:
+      label: Where did it go wrong?
+      description: Which step of the install guide, and what did you see?
+    validations:
+      required: true
+  - type: textarea
+    id: events
+    attributes:
+      label: CloudFormation events / error output
+      description: The first failed resource and its status reason is usually the most useful. Remove account IDs if you prefer.
+      render: text
