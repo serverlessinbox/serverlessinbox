@@ -6,7 +6,7 @@ ServerlessInbox is email the way serverless should work: no servers to patch, no
 
 It speaks [JMAP](https://jmap.io) (RFC 8620 / 8621) — a modern, stateless, JSON email API — so it is as much an email *engine* for your own tooling and integrations as it is a mailbox.
 
-> **Status: public beta.** It runs real mail today, but expect rough edges and breaking changes between releases. Provided as-is, without warranty. Free during the beta.
+> **Status: public beta.** It runs real mail today, but expect rough edges and breaking changes between releases. Provided as-is, without warranty — see the [software terms](TERMS.md).
 
 ## What you get
 
@@ -33,11 +33,11 @@ Everything you deploy is auditable:
 
 | Open source (Apache-2.0) | Closed |
 |---|---|
-| CDK constructs and CloudFormation templates, IDL and generated SDKs, webmail and admin UIs, JMAP server library, documentation | The Go Lambda implementations |
+| CDK constructs and CloudFormation templates, IDL and generated SDKs, admin UI, JMAP server library, documentation | The Go Lambda implementations, webmail UI (for now) |
 
 The closed Lambdas are pre-compiled and **signed**: each binary verifies its own signature at startup. The infrastructure around them — every IAM permission, every resource — is open and yours to inspect.
 
-<!-- TODO(owner): one sentence on what the licence server receives at registration/refresh. -->
+The Lambdas check their licence with the ServerlessInbox licence server. It never receives email content, contacts or user names — the [software terms](TERMS.md) list exactly what it does receive.
 
 ## Repositories
 
@@ -47,7 +47,6 @@ The closed Lambdas are pre-compiled and **signed**: each binary verifies its own
 | [mailbox-apps](https://github.com/serverlessinbox/mailbox-apps) | Ready-to-deploy app / CloudFormation templates |
 | [mailbox-idl](https://github.com/serverlessinbox/mailbox-idl) | JMAP JSON schemas, admin API protobuf — source of the generated SDKs |
 | [jmap-server-go](https://github.com/serverlessinbox/jmap-server-go) | JMAP server library for Go |
-| [webmail-ui](https://github.com/serverlessinbox/webmail-ui) | Webmail frontend |
 | [admin-ui](https://github.com/serverlessinbox/admin-ui) | Admin frontend |
 | [artifact-registry](https://github.com/serverlessinbox/artifact-registry) | Release artifact resolution |
 
@@ -61,5 +60,4 @@ The closed Lambdas are pre-compiled and **signed**: each binary verifies its own
 
 ## License
 
-The open-source repositories are licensed under [Apache-2.0](LICENSE). The pre-compiled Lambda binaries are distributed under separate terms.
-<!-- TODO(owner): link the binary licence terms once written. -->
+The open-source repositories are licensed under [Apache-2.0](LICENSE). The pre-compiled Lambda binaries are covered by the [ServerlessInbox Software Terms](TERMS.md).
