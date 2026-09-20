@@ -15,8 +15,10 @@ One deploy gives you:
 - **JMAP API** — email, mailboxes, threads, contacts, address books, sharing, identities, WebSocket push
 - **Webmail** and an **admin UI**
 - **Admin API** and a **blob API** for attachments
-- **DNS records generated for you** (SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI
+- **DNS records generated for you** (SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI, and you choose the SPF and DMARC policy
 - **SES reputation handling** built in — bounce and complaint processing and suppression, so your SES account stays healthy
+- **More than one domain**, several addresses per person through aliases, **shared mailboxes with delegated access**, and groups — all managed from the admin UI or the Admin API
+- **Plus-addressing** works out of the box: `you+anything@your-domain.com` lands in your inbox, no configuration
 - Cognito as the default identity provider, with per-deployment configuration
 
 One deployment serves one organisation. Tenant isolation is enforced in the data layer, but running several organisations on one deployment is [not available yet](https://docs.serverlessinbox.com/explanation/multi-tenancy-model/).
