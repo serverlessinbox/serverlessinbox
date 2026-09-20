@@ -2,7 +2,7 @@
 
 These terms apply to the pre-compiled ServerlessInbox Lambda functions ("the software"), provided by van der Waal software design. The open-source parts of ServerlessInbox are covered by their own [Apache-2.0 licence](LICENSE).
 
-1. **Use.** You may use the software in your own AWS account, for personal or business use, within the limits of the licence issued to your installation. Free licences are available; paid licences with higher limits may be offered.
+1. **Use.** You may use the software in your own AWS account, for personal or business use, within the limits of the licence issued to your installation. A free licence tier always exists; its exact limits are still being set. Paid tiers will follow, and if your paid licence ends your mail accounts keep working on the free tier — only extended features switch off. See the [licence model](https://docs.serverlessinbox.com/explanation/license-model/).
 
 2. **No warranty.** The software is provided "as is". To the extent the law allows, van der Waal software design is not liable for any damage — including lost or undelivered email, lost data, or AWS costs. Keep your own backups of anything important.
 

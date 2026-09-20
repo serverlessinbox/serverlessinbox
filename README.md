@@ -1,12 +1,12 @@
 # ServerlessInbox
 
-**A complete JMAP email server that runs serverless in your own AWS account — for about $1 a month.**
+**A complete JMAP email server that runs serverless in your own AWS account — modelled at under $1 a month.**
 
-ServerlessInbox is email the way serverless should work: no servers to patch, no idle compute to pay for, nothing running when nobody is mailing. Lambda, DynamoDB, SQS and SES do the work; you pay for what you use. For a small company that is roughly a dollar a month in AWS runtime.
+ServerlessInbox is email the way serverless should work: no servers to patch, no idle compute to pay for, nothing running when nobody is mailing. Lambda, DynamoDB, SQS and SES do the work; you pay for what you use. For a small company the modelled AWS bill is about $0.77 a month, and an idle deployment is the price of your Route 53 hosted zone — roughly $0.50. Those are [calculated figures with the workload and unit prices shown](https://docs.serverlessinbox.com/tutorials/#cost-estimate), not measurements from a production fleet.
 
 It speaks [JMAP](https://jmap.io) (RFC 8620 / 8621) — a modern, stateless, JSON email API — so it is as much an email *engine* for your own tooling and integrations as it is a mailbox.
 
-> **Status: public beta.** It runs real mail today, but expect rough edges and breaking changes between releases. Provided as-is, without warranty — see the [software terms](TERMS.md).
+> **Status: public beta.** It carries the maintainer's own mail, and no one else's yet. Expect rough edges and breaking changes between releases. Provided as-is, without warranty — see the [software terms](TERMS.md).
 
 ## What you get
 
@@ -15,9 +15,44 @@ One deploy gives you:
 - **JMAP API** — email, mailboxes, threads, contacts, address books, sharing, identities, WebSocket push
 - **Webmail** and an **admin UI**
 - **Admin API** and a **blob API** for attachments
-- **DNS automation** for your mail domain (SPF, DKIM, DMARC)
+- **DNS records generated for you** (SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI
 - **SES reputation handling** built in — bounce and complaint processing and suppression, so your SES account stays healthy
-- Multi-tenant from the ground up; Cognito as the default identity provider
+- Cognito as the default identity provider, with per-deployment configuration
+
+One deployment serves one organisation. Tenant isolation is enforced in the data layer, but running several organisations on one deployment is [not available yet](https://docs.serverlessinbox.com/explanation/multi-tenancy-model/).
+
+## Is this for you yet?
+
+**Try it if** you're comfortable in your own AWS account, want a cheap JMAP mailbox on a domain you can experiment with, and don't mind reporting a rough edge instead of hitting a support line.
+
+**Not yet if** you need to move existing mail in, run several organisations from one deployment, or have someone to call at 3am. The beta carries the maintainer's own mail — it has not yet been run by anyone else.
+
+### What's not there yet
+
+Stated up front so nothing surprises you after you've pointed a domain at it:
+
+- **Import and export** — no migration tool yet. This is the one being worked on first: until it lands, mail moves in and out only through the JMAP API.
+- **Calendar** — planned, not built.
+- **Personal access tokens** — API access today goes through OAuth, not long-lived tokens.
+- **MCP server** — letting an AI assistant work with your mailbox over the Model Context Protocol is largely built, but it is not usable until personal access tokens land. Those are the blocker, not the MCP side.
+- **AI-assisted categorisation** — planned, using the cheapest Bedrock model that does the job.
+- **Sieve scripts** — no server-side filtering rules yet.
+- **Date-range search** — full-text search works; filtering results by "before" and "after" does not yet.
+- **Support conversations in-product** — you can open a support case and grant time-boxed, read-only access from the admin UI, but the discussion itself still happens over your normal support channel.
+- **IMAP/SMTP bridge** — only if enough people ask. It needs always-on compute, which breaks the cost model, so it would be opt-in and cost extra.
+- **Multi-tenancy, and more regions than eu-west-1** — see above.
+
+The [discussions](../../discussions) are the place to argue for what should come first.
+
+### How you can help
+
+Three things are worth more to this project than a star:
+
+1. **Your actual AWS bill**, broken down by service, after a month of real use. The [cost estimate](https://docs.serverlessinbox.com/tutorials/#cost-estimate) is calculated, not measured — help turn it into measured data.
+2. **Where the install tripped you up**, even if you worked it out. Especially anything the docs told you that turned out to be wrong.
+3. **Which JMAP client you got working**, and which you couldn't. No third-party client has been formally verified yet.
+
+Post any of it in [Discussions](../../discussions), or open an [issue](../../issues/new/choose).
 
 ## Install
 
@@ -29,11 +64,11 @@ New AWS accounts start in the SES sandbox. The docs include a page written for A
 
 ## Open shell, closed core
 
-Everything you deploy is auditable:
+**The mail engine itself is closed.** The Go Lambdas that process, store and send your mail ship as pre-compiled binaries, and so does the webmail UI for now. Everything around them is open, so you can audit what the closed parts are allowed to do:
 
 | Open source (Apache-2.0) | Closed |
 |---|---|
-| CDK constructs and CloudFormation templates, IDL and generated SDKs, admin UI, JMAP server library, documentation | The Go Lambda implementations, webmail UI (for now) |
+| CDK constructs and CloudFormation templates, IDL and generated SDKs, admin UI, JMAP server library, documentation | **The Go Lambda implementations — the entire data plane** · the webmail UI (for now) |
 
 The closed Lambdas are pre-compiled and **signed**: each binary verifies its own signature at startup. The infrastructure around them — every IAM permission, every resource — is open and yours to inspect.
 
