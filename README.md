@@ -15,13 +15,13 @@ One deploy gives you:
 - **JMAP API** — email, mailboxes, threads, contacts, address books, sharing, identities, WebSocket push
 - **Webmail** and an **admin UI**
 - **Admin API** and a **blob API** for attachments
-- **DNS records generated for you** (SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI, and you choose the SPF and DMARC policy
+- **DNS records generated for you** (MX, SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI, and you choose the SPF and DMARC policy
 - **SES reputation handling** built in — bounce and complaint processing and suppression, so your SES account stays healthy
 - **More than one domain**, several addresses per person through aliases, **shared mailboxes with delegated access**, and groups — all managed from the admin UI or the Admin API
 - **Plus-addressing** works out of the box: `you+anything@your-domain.com` lands in your inbox, no configuration
 - Cognito as the default identity provider, with per-deployment configuration
 
-One deployment serves one organisation. Tenant isolation is enforced in the data layer, but running several organisations on one deployment is [not available yet](https://docs.serverlessinbox.com/explanation/multi-tenancy-model/).
+One deployment serves one organisation. Tenant isolation is enforced in the data layer, but running several organisations on one deployment is not available yet.
 
 ## Is this for you yet?
 
@@ -43,6 +43,8 @@ Stated up front so nothing surprises you after you've pointed a domain at it:
 - **Support conversations in-product** — you can open a support case and grant time-boxed, read-only access from the admin UI, but the discussion itself still happens over your normal support channel.
 - **IMAP/SMTP bridge** — only if enough people ask. It needs always-on compute, which breaks the cost model, so it would be opt-in and cost extra.
 - **Multi-tenancy, and more regions than eu-west-1** — see above.
+- **The free tier will shrink after the beta.** A free tier always exists, and we expect it to come down to one mailbox for new deployments once the beta ends. During the beta it allows 10 mail accounts across up to 3 domains, and beta participants keep what they are running then — those 10 accounts and 3 domains included — indefinitely, so testing now is what secures multi-account use later. Mail never stops because of licensing — see the [licence model](https://docs.serverlessinbox.com/explanation/license-model/).
+- **Updates arrive on their own by default.** The `artifactTracking` parameter defaults to `minor`, so a deployment picks up patch releases within its current minor version automatically (fixes and maintenance, no new features). Set it to `pinned` at install time if you'd rather decide yourself — worth doing during a beta.
 
 The [discussions](../../discussions) are the place to argue for what should come first.
 
@@ -73,6 +75,8 @@ New AWS accounts start in the SES sandbox. The docs include a page written for A
 | CDK constructs and CloudFormation templates, IDL and generated SDKs, admin UI, JMAP server library, documentation | **The Go Lambda implementations — the entire data plane** · the webmail UI (for now) |
 
 The closed Lambdas are pre-compiled and **signed**: each binary verifies its own signature at startup. The infrastructure around them — every IAM permission, every resource — is open and yours to inspect.
+
+**The Lambdas holding the most privileged IAM roles are the open ones.** The control-plane TypeScript Lambdas — the pieces that can change your infrastructure — ship as readable source precisely so you can audit what they are allowed to do. The closed binaries are the mail engine, and the open CDK around them defines exactly what that engine may touch.
 
 The Lambdas check their licence with the ServerlessInbox licence server. It never receives email content, contacts or user names — the [software terms](TERMS.md) list exactly what it does receive.
 
