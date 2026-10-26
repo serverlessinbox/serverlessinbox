@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Questions and ideas
-    url: https://github.com/serverlessinbox/serverlessinbox/discussions
+    url: https://github.com/orgs/serverlessinbox/discussions
     about: Ask a question, share an idea or show what you built
   - name: Security vulnerability
     url: https://github.com/serverlessinbox/serverlessinbox/security/advisories/new

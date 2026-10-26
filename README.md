@@ -65,7 +65,7 @@ Three things about a deployment's terms, rather than its features:
 - **The free tier will shrink after the beta.** A free tier always exists, and we expect it to come down to one mailbox for new deployments once the beta ends. During the beta it allows 10 mail accounts across up to 3 domains, and beta participants keep what they are running then — those 10 accounts and 3 domains included — indefinitely, so testing now is what secures multi-account use later. Mail never stops because of licensing — see the [licence model](https://docs.serverlessinbox.com/explanation/license-model/).
 - **Updates arrive on their own by default.** The `artifactTracking` parameter defaults to `minor`, so a deployment picks up patch releases within its current minor version automatically (fixes and maintenance, no new features). Set it to `pinned` at install time if you'd rather decide yourself — worth doing during a beta.
 
-The [discussions](../../discussions) are the place to argue for what should come first.
+The [discussions](https://github.com/orgs/serverlessinbox/discussions) are the place to argue for what should come first.
 
 ## How you can help
 
@@ -75,7 +75,7 @@ Three things are worth more to this project than a star:
 2. **Where the install tripped you up**, even if you worked it out. Especially anything the docs told you that turned out to be wrong.
 3. **Which JMAP client you got working**, and which you couldn't. No third-party client has been formally verified yet.
 
-Post any of it in [Discussions](../../discussions), or open an [issue](../../issues/new/choose).
+Post any of it in [Discussions](https://github.com/orgs/serverlessinbox/discussions), or open an [issue](../../issues/new/choose).
 
 ## Open shell, closed core
 
@@ -107,7 +107,7 @@ The Lambdas check their licence with the ServerlessInbox licence server. It neve
 **All issues live here** — whatever the component. You don't need to know which repo a problem is in.
 
 - 🐛 [Report a bug or install problem](../../issues/new/choose)
-- 💬 [Questions, ideas and show-and-tell](../../discussions)
+- 💬 [Questions, ideas and show-and-tell](https://github.com/orgs/serverlessinbox/discussions)
 - 🔒 Security issues: please don't open a public issue — see [SECURITY.md](https://github.com/serverlessinbox/.github/blob/main/SECURITY.md)
 
 ## License
