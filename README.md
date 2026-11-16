@@ -10,13 +10,16 @@ It speaks [JMAP](https://jmap.io) (RFC 8620 / 8621) — a modern, stateless, JSO
 
 ## What you get
 
-The goal from the start has been a first stable release covering core mail, and that is what exists today. Core mail here means the whole path a message takes and the machinery around it: JMAP mail — email, mailboxes, threads, contacts, address books, sharing, identities — webmail and an admin UI, an admin API and a blob API, generated DNS records, SES bounce and complaint handling with suppression, multiple domains, aliases, shared mailboxes with delegated access, groups, plus-addressing, full-text search, and push. That is a working mail server, not a preview of one.
+The goal from the start has been a first stable release covering core mail, and that is what exists today. Core mail here means the whole path a message takes and the machinery around it: JMAP mail — email, mailboxes, threads, contacts, address books, sharing, identities — webmail and an admin UI, an admin API and a blob API, generated DNS records, SES bounce and complaint handling with suppression, multiple domains, aliases, shared mailboxes with delegated access, groups, plus-addressing, full-text search, and push. Around that core sit personal access tokens, Sieve filtering rules, and import of your existing mail over IMAP. That is a working mail server, not a preview of one.
 
-What is not there is in the [roadmap](#roadmap) below — import and export first.
+What is not there is in the [roadmap](#roadmap) below.
 
 One deploy gives you:
 
-- **JMAP API** — email, mailboxes, threads, contacts, address books, sharing, identities, WebSocket push
+- **JMAP API** — email, mailboxes, threads, contacts, address books, sharing, identities, WebSocket push and JMAP push subscriptions
+- **Personal access tokens** — any mailbox user issues their own
+- **Sieve** server-side filtering rules
+- **Import over IMAP** — bring your existing mail across from another provider
 - **Webmail** and an **admin UI**
 - **Admin API** and a **blob API** for attachments
 - **DNS records generated for you** (MX, SPF, DKIM, DMARC) — you apply them to Route 53 with one click in the admin UI, and you choose the SPF and DMARC policy
@@ -31,7 +34,9 @@ One deployment serves one organisation. Tenant isolation is enforced in the data
 
 **Try it if** you're comfortable in your own AWS account, want a cheap JMAP mailbox on a domain you can experiment with, and don't mind reporting a rough edge instead of hitting a support line.
 
-**Not yet if** you need to move existing mail in, run several organisations from one deployment, or have someone to call at 3am.
+The project's own mail runs on ServerlessInbox.
+
+**Not yet if** you need to get your mail out again (export), run several organisations from one deployment, or have someone to call at 3am.
 
 ## Install
 
@@ -41,17 +46,28 @@ Deploy from a CloudFormation template or as CDK constructs. You need an AWS acco
 
 New AWS accounts start in the SES sandbox. The docs include a page written for AWS reviewers that explains how ServerlessInbox handles bounces and complaints, to support your sandbox-exit request.
 
+If an install fails, the [diagnostics site](https://diagnostics.serverlessinbox.com) is where you can see why. Failure reports are sent by default; set `sendStackFailures` to switch them off.
+
+## Recently released
+
+**November 2026**
+
+- [Personal access tokens](https://docs.serverlessinbox.com/how-to/user-features/use-access-tokens/) — any mailbox user issues their own
+- [Sieve filtering rules](https://docs.serverlessinbox.com/reference/jmap-api/sievescript/) — server-side
+- [JMAP push subscriptions](https://docs.serverlessinbox.com/reference/jmap-api/pushsubscription/)
+- [Import from another provider over IMAP](https://docs.serverlessinbox.com/how-to/user-features/import-mail/)
+
+The full history is on the [roadmap page](https://docs.serverlessinbox.com/explanation/roadmap/).
+
 ## Roadmap
 
-Core mail is the finished part. Everything below is not, listed in the order it is queued — import and export first, and that is what is being worked on now.
+Core mail is the finished part. The items below are not, in no particular order.
 
 | On the way | Where it stands |
 |---|---|
-| **Import and export** | Being worked on now. There is no migration tool yet; until it lands, mail moves in and out through the JMAP API. |
-| **Personal access tokens** | API access today goes through OAuth, not long-lived tokens. |
-| **MCP server** | Letting an AI assistant work with your mailbox over the Model Context Protocol is largely built, but unusable until personal access tokens land. Those are the blocker, not the MCP side. |
+| **Export** | Import from another provider over IMAP is available; export is not yet — until it lands, mail moves out through the JMAP API. |
+| **MCP server** | Letting an AI assistant work with your mailbox over the Model Context Protocol is largely built, but not yet verified end to end. Access tokens, its former blocker, now exist. |
 | **Malware and authentication verdicts affecting routing** | SES scans inbound mail and records its verdict on the message, but placement does not use it yet: mail SES flags as carrying malware is delivered to the inbox rather than to junk. SPF, DKIM and DMARC results are recorded and visible in the same way, and likewise do not affect routing yet. The spam verdict is the one that does — spam goes to junk today. |
-| **Sieve scripts** | No server-side filtering rules yet. |
 | **Date-range search** | Full-text search works; filtering results by "before" and "after" does not yet. |
 | **AI-assisted categorisation** | Planned, using the cheapest Bedrock model that does the job. |
 | **Calendar** | Planned, not built. |
@@ -61,7 +77,7 @@ Core mail is the finished part. Everything below is not, listed in the order it 
 
 Three things about a deployment's terms, rather than its features:
 
-- **No lock-in.** Any subscription will always be endable each month — no annual commitment, no term to sit out. And when a paid subscription ends, mail accounts keep working on the free tier; only extended features switch off. You should keep paying because you like the product, not because leaving is expensive. Import and export are on the roadmap above for the same reason.
+- **No lock-in.** Any subscription will always be endable each month — no annual commitment, no term to sit out. And when a paid subscription ends, mail accounts keep working on the free tier; only extended features switch off. You should keep paying because you like the product, not because leaving is expensive. Export is on the roadmap above for the same reason.
 - **The free tier will shrink after the beta.** A free tier always exists, and we expect it to come down to one mailbox for new deployments once the beta ends. During the beta it allows 10 mail accounts across up to 3 domains, and beta participants keep what they are running then — those 10 accounts and 3 domains included — indefinitely, so testing now is what secures multi-account use later. Mail never stops because of licensing — see the [licence model](https://docs.serverlessinbox.com/explanation/license-model/).
 - **Updates arrive on their own by default.** The `artifactTracking` parameter defaults to `minor`, so a deployment picks up patch releases within its current minor version automatically (fixes and maintenance, no new features). Set it to `pinned` at install time if you'd rather decide yourself — worth doing during a beta.
 
