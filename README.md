@@ -42,7 +42,7 @@ The project's own mail runs on ServerlessInbox.
 
 Deploy from a CloudFormation template or as CDK constructs. You need an AWS account and a Route 53 hosted zone for your mail domain. The beta supports **eu-west-1** only.
 
-👉 **[Install guide](https://docs.serverlessinbox.com/tutorials/install-mailbox-standard/)** · [Documentation](https://docs.serverlessinbox.com)
+👉 **[Install guide](https://docs.serverlessinbox.com/tutorials/install-mail-server-standard/)** · [Documentation](https://docs.serverlessinbox.com)
 
 New AWS accounts start in the SES sandbox. The docs include a page written for AWS reviewers that explains how ServerlessInbox handles bounces and complaints, to support your sandbox-exit request.
 
@@ -111,9 +111,9 @@ The Lambdas check their licence with the ServerlessInbox licence server. It neve
 
 | Repo | What it is |
 |---|---|
-| [mailbox-cdk](https://github.com/serverlessinbox/mailbox-cdk) | CDK constructs — the infrastructure |
-| [mailbox-apps](https://github.com/serverlessinbox/mailbox-apps) | Ready-to-deploy app / CloudFormation templates |
-| [mailbox-idl](https://github.com/serverlessinbox/mailbox-idl) | JMAP JSON schemas, admin API protobuf — source of the generated SDKs |
+| [mail-server-cdk](https://github.com/serverlessinbox/mail-server-cdk) | CDK constructs — the infrastructure |
+| [mail-server-apps](https://github.com/serverlessinbox/mail-server-apps) | Ready-to-deploy app / CloudFormation templates |
+| [mail-server-idl](https://github.com/serverlessinbox/mail-server-idl) | JMAP JSON schemas, admin API protobuf — source of the generated SDKs |
 | [jmap-server-go](https://github.com/serverlessinbox/jmap-server-go) | JMAP server library for Go |
 | [admin-ui](https://github.com/serverlessinbox/admin-ui) | Admin frontend |
 | [artifact-registry](https://github.com/serverlessinbox/artifact-registry) | Release artifact resolution |
